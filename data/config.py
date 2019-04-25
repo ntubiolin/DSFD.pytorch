@@ -37,7 +37,7 @@ _C.filter_min_face = True
 # train config
 _C.LR_STEPS = (80000,100000,120000)
 _C.MAX_STEPS = 150000
-_C.EPOCHES = 100
+_C.EPOCHES = 500
 
 # anchor config
 _C.FEATURE_MAPS = [160, 80, 40, 20, 10, 5]

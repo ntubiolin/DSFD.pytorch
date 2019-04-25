@@ -33,7 +33,7 @@ class Detect(Function):
             conf_data: (tensor) Shape: Conf preds from conf layers
                 Shape: [batch*num_priors,num_classes]
             prior_data: (tensor) Prior boxes and variances from priorbox layers
-                Shape: [1,num_priors,4] 
+                Shape: [1,num_priors,4]
         """
         num = loc_data.size(0)
         num_priors = prior_data.size(0)
@@ -57,8 +57,8 @@ class Detect(Function):
             for cl in range(1, self.num_classes):
                 c_mask = conf_scores[cl].gt(self.conf_thresh)
                 scores = conf_scores[cl][c_mask]
-                
-                if scores.dim() == 0:
+
+                if scores.size(0) == 0:
                     continue
                 l_mask = c_mask.unsqueeze(1).expand_as(boxes)
                 boxes_ = boxes[l_mask].view(-1, 4)
