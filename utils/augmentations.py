@@ -776,8 +776,8 @@ def preprocess(img, bbox_labels, mode, image_path):
     img_width, img_height = img.size
     sampled_labels = bbox_labels
     if mode == 'train':
-        if cfg.apply_distort:
-            img = distort_image(img)
+        # if cfg.apply_distort:
+        #    img = distort_image(img)
         if cfg.apply_expand:
             img, bbox_labels, img_width, img_height = expand_image(
                 img, bbox_labels, img_width, img_height)

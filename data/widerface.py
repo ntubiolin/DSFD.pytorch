@@ -10,6 +10,8 @@ import torch.utils.data as data
 import numpy as np
 import random
 from utils.augmentations import preprocess
+from data.aug import Aug
+from data.config import cfg
 
 
 class WIDERDetection(data.Dataset):
@@ -21,7 +23,8 @@ class WIDERDetection(data.Dataset):
         self.fnames = []
         self.boxes = []
         self.labels = []
-
+        if self.mode=='train' and cfg.apply_distort:
+            self.augmentation = Aug()
         with open(list_file) as f:
             lines = f.readlines()
 
@@ -61,9 +64,18 @@ class WIDERDetection(data.Dataset):
             if img.mode == 'L':
                 img = img.convert('RGB')
 
+            boxes = self.boxes[index]
+
+            # Apply aug
+            img = np.array(img)  # (h, w, c)
+            if self.mode=='train' and cfg.apply_distort:
+                img, boxes = self.augmentation.ultimate_aug(img, boxes)
+            img = Image.fromarray(img)
+
+
             im_width, im_height = img.size
             boxes = self.annotransform(
-                np.array(self.boxes[index]), im_width, im_height)
+                np.array(boxes), im_width, im_height)
             label = np.array(self.labels[index])
             bbox_labels = np.hstack((label[:, np.newaxis], boxes)).tolist()
             img, sample_labels = preprocess(
