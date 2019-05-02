@@ -76,7 +76,7 @@ class WIDERDetection(data.Dataset):
             im_width, im_height = img.size
             boxes = self.annotransform(
                 np.array(boxes), im_width, im_height)
-            label = np.array(self.labels[index])
+            label = np.array(self.labels[index][:boxes.shape[0]])
             bbox_labels = np.hstack((label[:, np.newaxis], boxes)).tolist()
             img, sample_labels = preprocess(
                 img, bbox_labels, self.mode, image_path)
